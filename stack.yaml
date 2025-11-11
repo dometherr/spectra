@@ -2,5 +2,6 @@ flags: {}
 
 packages:
 - './core/domain'
+- './shared/types'
 
 resolver: lts-24.11
