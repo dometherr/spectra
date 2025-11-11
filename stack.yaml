@@ -1,0 +1,6 @@
+flags: {}
+
+packages:
+- './core/domain'
+
+resolver: lts-24.11
