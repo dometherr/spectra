@@ -1,0 +1,22 @@
+cabal-version: 2.2
+
+name:           types
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/dometherr/spectra#readme>
+homepage:       https://github.com/dometherr/spectra#readme
+bug-reports:    https://github.com/dometherr/spectra/issues
+author:         Guilherme Herter
+maintainer:     &lt;unset&gt;
+copyright:      Guilherme Herter &lt;All rights reserved&gt;
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+
+extra-source-files:
+    README.md
+
+library
+  hs-source-dirs:   src
+  build-depends:    base >=4.7 && <5
+  default-language: Haskell2010
+  ghc-options:      -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
