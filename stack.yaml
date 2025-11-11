@@ -4,4 +4,9 @@ packages:
 - './core/domain'
 - './shared/types'
 
+ghc-options:
+  "$locals":
+    -Wno-unused-top-binds
+    -Wno-missing-signatures
+
 resolver: lts-24.11
