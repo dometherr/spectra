@@ -1,12 +1,14 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.Symbol (Symbol, mkSymbol) where
 
 import qualified Data.Text as T
+import Data.Variance
 
 -- | A symbol represents a financial asset
 data Symbol
-    = Symbol {symId :: SymbolId}
+    = Symbol {symId :: SymbolId, symVars :: [Variance (Over 15 'Second)]}
 
 -- | A symbol's unique identifier
 newtype SymbolId
@@ -14,4 +16,4 @@ newtype SymbolId
 
 -- | A symbol builder
 mkSymbol :: T.Text -> Symbol
-mkSymbol = Symbol . SymbolId
+mkSymbol = flip Symbol [] . SymbolId
