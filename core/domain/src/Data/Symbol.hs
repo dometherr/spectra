@@ -4,15 +4,17 @@
 module Data.Symbol (Symbol, mkSymbol) where
 
 import qualified Data.Text as T
-import Data.Variance
+import           Data.Variance (Variance, Over15'')
 
 -- | A symbol represents a financial asset
 data Symbol
-    = Symbol {symId :: SymbolId, symVars :: [Variance (Over 15 'Second)]}
+    = Symbol {symId :: SymbolId, symVars :: [Variance Over15'']}
+    deriving (Show)
 
 -- | A symbol's unique identifier
 newtype SymbolId
     = SymbolId {unSymbolId :: T.Text}
+    deriving (Show)
 
 -- | A symbol builder
 mkSymbol :: T.Text -> Symbol
