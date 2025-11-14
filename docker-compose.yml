@@ -1,0 +1,53 @@
+services:
+  spectra-broker:
+    image: apache/kafka:4.1.1
+    container_name: spectra_broker
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@spectra-broker:29093'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+      KAFKA_LISTENERS: 'CONTROLLER://:29093,PLAINTEXT://:19092'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://spectra-broker:19092'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      CLUSTER_ID: ${SPECTRA_KAFKA_CLUSTER_ID}
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_SHARE_COORDINATOR_STATE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_SHARE_COORDINATOR_STATE_TOPIC_MIN_ISR: 1
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+    volumes:
+      - ./docker/logs/kafka:/tmp/kraft-combined-logs
+    networks:
+      - spectra_net
+    ports:
+      - "9092:19092" 
+    
+  spectra-init-topics:
+    image: apache/kafka:4.1.1
+    depends_on:
+      - spectra-broker
+    networks:
+      - spectra_net
+    volumes:
+      - ./docker/scripts/spectra_create_topics.sh:/init-topics.sh
+    entrypoint: ["/bin/bash", "/init-topics.sh"]
+
+  spectra-agn-db:
+    image: postgres:16
+    container_name: spectra_agn_db
+    environment:
+      POSTGRES_USER: spectra_agn_service
+      POSTGRES_PASSWORD: ${SPECTRA_AGN_DB_PASSWORD}
+      POSTGRES_DB: spectra_agn_db
+    networks:
+      - spectra_net
+    ports:
+      - "5432:5432"
+
+networks:
+  spectra_net:
+    driver: bridge
