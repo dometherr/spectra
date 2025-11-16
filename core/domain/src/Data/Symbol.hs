@@ -9,12 +9,12 @@ import           Data.Variance (Variance, Over15'')
 -- | A symbol represents a financial asset
 data Symbol
     = Symbol {symId :: SymbolId, symVars :: [Variance Over15'']}
-    deriving (Show)
+    deriving (Show, Eq)
 
 -- | A symbol's unique identifier
 newtype SymbolId
     = SymbolId {unSymbolId :: T.Text}
-    deriving (Show)
+    deriving (Show, Eq, Ord)
 
 -- | A symbol builder
 mkSymbol :: T.Text -> Symbol
