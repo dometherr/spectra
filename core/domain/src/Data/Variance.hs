@@ -41,6 +41,7 @@ data Variance over where
 
 -- | A standalone Show instance for Variance
 deriving instance Show (Variance over)
+deriving instance Eq (Variance over)
 
 -- | A variance builder
 mkVariance :: Timestamp -> Fluctuation -> Variance (Over (a :: Nat) (i :: Interval))
@@ -49,7 +50,7 @@ mkVariance = WVariance
 -- | A fluctuation represents the price fluctuation
 data Fluctuation
     = Fluctuation {open, high, low, close :: Double}
-    deriving (Show)
+    deriving (Show, Eq)
 
 -- | A fluctuation builder
 mkFluctuation :: Double -> Double -> Double -> Double -> Either T.Text Fluctuation
@@ -63,11 +64,11 @@ mkFluctuation o h l c
 
 -- | A interval represents the time interval
 data Interval = Second | Minute | Hour
-    deriving (Show)
+    deriving (Show, Eq)
 
 -- | A type-level function that holds the amount at given interval
 data Over (a :: Nat) (i :: Interval)
-    deriving (Show)
+    deriving (Show, Eq)
 
 -- | Type aliases for common over intervals
 type Over15'' = Over 15 'Second
